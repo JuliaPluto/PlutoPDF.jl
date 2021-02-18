@@ -1,0 +1,12 @@
+{
+  "name": "pluto-puppeteer",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "bin": "bin.js",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "puppeteer": "^7.0.4"
+  }
+}
