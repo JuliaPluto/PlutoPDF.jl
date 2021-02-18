@@ -5,3 +5,4 @@ version = "0.1.0"
 
 [deps]
 NodeJS = "2bd173c7-0d6d-553b-b6af-13a54713934c"
+Pluto = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
