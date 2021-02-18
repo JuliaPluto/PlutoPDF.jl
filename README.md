@@ -16,5 +16,5 @@ PlutoExport.pdf("notebook.jl")
 
 Alternatively the `pluto-export` command takes two arguments, the first being the path to the notebook file and the second being the desired exported output path.
 ```
-pluto-export notebook.jl
+pluto-export notebook.jl notebook.pdf
 ```
