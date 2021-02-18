@@ -22,7 +22,11 @@ function startPluto() {
                 }
             });
             child.stderr.on('data', function(chunk) {
-                // console.log(chunk.toString());
+                const err = chunk.toString();
+                // Check for a couple of important errors
+                if(err.includes('Package Pluto not found in current path')) {
+                    throw new Error(err);
+                }
             });
         });
     });
