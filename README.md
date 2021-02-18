@@ -1,5 +1,5 @@
 # PlutoExport.jl
-Export Pluto notebooks to document formats without the need for an end-user on the application frontend.
+Export Pluto notebooks to PDF from your terminal!
 
 ## Installation
 From the Julia REPL, PlutoExport.jl can be installed with the following:
