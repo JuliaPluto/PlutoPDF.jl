@@ -1,0 +1,7 @@
+name = "PlutoExport"
+uuid = "6eb38059-8c05-41f7-8871-5e7e2697ace6"
+license = "MIT"
+version = "0.1.0"
+
+[deps]
+NodeJS = "2bd173c7-0d6d-553b-b6af-13a54713934c"

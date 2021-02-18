@@ -57,7 +57,6 @@ async function pdf(url, output, beforeClose=async ()=>{}) {
     await beforeClose();
 
     await browser.close();
-    console.log('Finished cleaning up');
 }
 
 module.exports = {pdf};
