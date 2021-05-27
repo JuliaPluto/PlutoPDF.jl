@@ -9,7 +9,7 @@ function sleep(time) {
     });
 }
 
-async function pdf(url, output, beforeClose=async ()=>{}) {
+async function pdf(url, output, options, beforeClose=async ()=>{}) {
     const browser = await p.launch();
     console.log('Initiated headless browser');
     const page = await browser.newPage();
@@ -40,16 +40,7 @@ async function pdf(url, output, beforeClose=async ()=>{}) {
     console.log('Exporting as pdf...');
     await page.pdf({
         path: output,
-        format: 'A4',
-        margin: {
-            top: "50px",
-            right: "0px",
-            bottom: "50px",
-            left: "0px"
-        },
-        headerTemplate: '<p></p>',
-        footerTemplate: '<p></p>',
-        displayHeaderFooter: true
+        ...options
     });
 
     console.log(chalk.green('Exported ✓') + ' ... cleaning up');
