@@ -1,10 +1,10 @@
-const pluto = require('./pluto');
 const exp = require('./export');
 const path = require('path');
-const chalk = require('chalk');
+const fileUrl = require("file-url");
 
 const fileInput = process.argv[2];
 const fileOutput = process.argv[3];
+const options = JSON.parse(process.argv[4]);
 
 if(!fileInput) {
     console.error('ERROR: First program argument must be a Pluto notebook path');
@@ -16,17 +16,12 @@ if(!fileOutput) {
 }
 
 (async () => {
-    const plutoServer = await pluto.startPluto();
-    console.log('Started Pluto server');
-
-    const url = plutoServer.url;
     const file = path.resolve(fileInput);
     const outputFile = path.resolve(fileOutput);
-    const exportUrl = `${url.protocol}//${url.host}/open?path=${encodeURIComponent(file)}&secret=${url.searchParams.get('secret')}`
 
-    await exp.pdf(exportUrl, outputFile, async () => {
-        pluto.stopPluto(plutoServer);
-    });
+    const exportUrl = fileUrl(file)
+
+    await exp.pdf(exportUrl, outputFile, options);
 
     process.exit();
 })();
