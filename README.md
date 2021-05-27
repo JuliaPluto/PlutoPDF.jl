@@ -14,7 +14,7 @@ import Pkg; Pkg.add(url="https://github.com/JuliaPluto/PlutoPDF.jl")
 
 From within Julia:
 
-```
+```julia
 import PlutoPDF
 PlutoPDF.pluto_to_pdf("notebook.jl")
 ```
