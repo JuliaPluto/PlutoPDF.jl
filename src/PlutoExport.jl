@@ -1,4 +1,4 @@
-module PlutoExport
+module PlutoPDF
 
 import Pluto
 import NodeJS
