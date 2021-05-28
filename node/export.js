@@ -13,6 +13,7 @@ async function pdf(url, output, options, beforeClose=async ()=>{}) {
     const browser = await p.launch();
     console.log('Initiated headless browser');
     const page = await browser.newPage();
+    // await page.emulateMediaType('screen');
     await page.goto(url, {
         waitUntil: 'networkidle2'
     });

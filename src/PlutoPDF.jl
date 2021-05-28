@@ -1,7 +1,7 @@
 module PlutoPDF
 
 import Pluto
-import NodeJS
+using NodeJS
 import JSON
 import DefaultApplication
 
@@ -27,10 +27,10 @@ end
 const default_options = (
     format ="A4",
     margin=(
-        top="3cm",
-        right="1cm",
-        bottom="3cm",
-        left="1cm",
+        top="30mm",
+        right="15mm",
+        bottom="30mm",
+        left="10mm",
     ),
     printBackground=true,
     displayHeaderFooter=false,
@@ -42,7 +42,7 @@ function html_to_pdf(html_path::AbstractString, output_path::Union{AbstractStrin
     output_path = something(output_path, Pluto.numbered_until_new(splitext(html_path)[1]; suffix=".pdf", create_file=false))
 
     @info "Generating pdf..."
-    cmd = `node $bin_script $(abspath(html_path)) $(abspath(output_path)) $(JSON.json(options))`
+    cmd = `$(nodejs_cmd()) $bin_script $(abspath(html_path)) $(abspath(output_path)) $(JSON.json(options))`
     if console_output
         run(cmd)
     else
@@ -66,7 +66,7 @@ function pluto_to_pdf(notebook_path::AbstractString, output_path::Union{Abstract
     s = Pluto.ServerSession(;options=c)
     @info "Running notebook..."
     nb = Pluto.SessionActions.open(s, notebook_path; run_async=false)
-    html_contents = Pluto.generate_html(nb; binder_url_js="undefined")
+    html_contents = Pluto.generate_html(nb; binder_url_js="undefined", version="cd7c123")
     Pluto.SessionActions.shutdown(s, nb)
 
     filename = tempname() * ".html"
