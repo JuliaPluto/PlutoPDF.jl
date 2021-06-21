@@ -18,6 +18,11 @@ async function pdf(url, output, options, beforeClose=async ()=>{}) {
         waitUntil: 'networkidle2'
     });
     console.log('Loaded notebook file')
+    
+    await page.setViewport({
+        width: 1000,
+        height: 1000,
+    })
 
     while(true) {
         const queued = await page.evaluate(`Array.from(document.getElementsByClassName('queued')).map(x => x.id)`);
