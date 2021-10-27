@@ -11,11 +11,11 @@ NodeJS = "2bd173c7-0d6d-553b-b6af-13a54713934c"
 Pluto = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
 
 [compat]
-julia = "1.6"
+DefaultApplication = "1"
 JSON = "0.20, 0.21"
 NodeJS = "1.1.1"
-Pluto = "0.14.7,0.15"
-DefaultApplication = "1"
+Pluto = "0.14.7,0.15, 0.16"
+julia = "1.6"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
