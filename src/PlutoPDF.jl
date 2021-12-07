@@ -66,7 +66,7 @@ function pluto_to_pdf(notebook_path::AbstractString, output_path::Union{Abstract
     s = Pluto.ServerSession(;options=c)
     @info "Running notebook..."
     nb = Pluto.SessionActions.open(s, notebook_path; run_async=false)
-    html_contents = Pluto.generate_html(nb; binder_url_js="undefined", version="cd7c123")
+    html_contents = Pluto.generate_html(nb; binder_url_js="undefined")
     Pluto.SessionActions.shutdown(s, nb)
 
     filename = tempname() * ".html"
