@@ -2,6 +2,7 @@ using Test
 
 using PlutoPDF
 
+@show pwd()
 
 testfile = download(
     "https://raw.githubusercontent.com/fonsp/Pluto.jl/main/sample/Tower%20of%20Hanoi.jl",
@@ -11,6 +12,8 @@ testfile = download(
 is_CI = get(ENV, "CI", "no") == "no"
 
 outfile = pluto_to_pdf(testfile; open=is_CI)
+
+@show pwd()
 
 @test isfile(outfile)
 @test endswith(outfile, ".pdf")

@@ -4,25 +4,26 @@ on:
     workflow_dispatch:
     push:
         paths-ignore:
-            - '**.md'
+            - "**.md"
         branches:
             - main
     pull_request:
         paths-ignore:
-            - '**.md'
+            - "**.md"
 
 jobs:
     test:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                julia-version: ['1.7']
+                julia-version: ["1.7"]
                 os: [ubuntu-latest, windows-latest, macOS-latest]
 
         steps:
             - uses: actions/checkout@v2
 
-            - run: mkdir output/
+            - run: mkdir -p output
+
             - uses: julia-actions/setup-julia@v1
               with:
                   version: ${{ matrix.julia-version }}
