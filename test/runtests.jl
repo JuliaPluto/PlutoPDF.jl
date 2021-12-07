@@ -17,7 +17,8 @@ outfile = pluto_to_pdf(testfile; open=is_CI)
 
 output_dir = get(ENV, "TEST_OUTPUT_DIR", nothing)
 
-if output_dir isa String
+if @show(output_dir) isa String
+    mkpath(output_dir)
     @assert isdir(output_dir)
     cp(outfile, joinpath(output_dir, "hanoi.pdf"))
 end
