@@ -1,59 +1,59 @@
-const p = require('puppeteer');
-const chalk = require('chalk');
+const p = require("puppeteer")
+const chalk = require("chalk")
 
 function sleep(time) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve();
-        }, time);
-    });
+            resolve()
+        }, time)
+    })
 }
 
-async function pdf(url, output, options, beforeClose=async ()=>{}) {
-    const browser = await p.launch();
-    console.log('Initiated headless browser');
-    const page = await browser.newPage();
+async function pdf(url, output, options, beforeClose = async () => {}) {
+    const browser = await p.launch()
+    console.log("Initiated headless browser")
+    const page = await browser.newPage()
     // await page.emulateMediaType('screen');
     await page.goto(url, {
-        waitUntil: 'networkidle2'
-    });
-    console.log('Loaded notebook file')
-    
+        waitUntil: "networkidle2",
+    })
+    console.log("Loaded notebook file")
+
     await page.setViewport({
         width: 1000,
         height: 1000,
     })
 
-    while(true) {
-        const queued = await page.evaluate(`Array.from(document.getElementsByClassName('queued')).map(x => x.id)`);
-        const running = await page.evaluate(`Array.from(document.getElementsByClassName('running')).map(x => x.id)`);
+    while (true) {
+        const queued = await page.evaluate(`Array.from(document.getElementsByClassName('queued')).map(x => x.id)`)
+        const running = await page.evaluate(`Array.from(document.getElementsByClassName('running')).map(x => x.id)`)
         const cells = await page.evaluate(`Array.from(document.getElementsByTagName('pluto-cell')).map(x => x.id)`)
-        const bodyClasses = await page.evaluate(`document.body.getAttribute('class')`);
+        const bodyClasses = await page.evaluate(`document.body.getAttribute('class')`)
 
-        if(running.length > 0) {
-            process.stdout.write(`\rRunning cell ${chalk.yellow(`${cells.length-queued.length}/${cells.length}`)} ${chalk.cyan(`[${running[0]}]`)}`);
+        if (running.length > 0) {
+            process.stdout.write(`\rRunning cell ${chalk.yellow(`${cells.length - queued.length}/${cells.length}`)} ${chalk.cyan(`[${running[0]}]`)}`)
         }
-        
-        if(!(bodyClasses.includes('loading') || queued.length > 0 || running.length > 0)) {
-            process.stdout.write(`\rRunning cell ${chalk.yellow(`${cells.length}/${cells.length}`)}`);
-            console.log();
-            break;
+
+        if (!(bodyClasses.includes("loading") || queued.length > 0 || running.length > 0)) {
+            process.stdout.write(`\rRunning cell ${chalk.yellow(`${cells.length}/${cells.length}`)}`)
+            console.log()
+            break
         }
-        
-        await sleep(250);
+
+        await sleep(250)
     }
 
-    console.log('Exporting as pdf...');
+    console.log("Exporting as pdf...")
     await page.pdf({
         path: output,
-        ...options
-    });
+        ...options,
+    })
 
-    console.log(chalk.green('Exported ✓') + ' ... cleaning up');
+    console.log(chalk.green("Exported ✓") + " ... cleaning up")
 
-    await beforeClose();
+    await beforeClose()
 
-    await browser.close();
+    await browser.close()
 }
 
-module.exports = {pdf};
+module.exports = { pdf }

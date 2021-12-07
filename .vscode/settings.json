@@ -1,0 +1,15 @@
+{
+    "prettier.printWidth": 160,
+    "prettier.tabWidth": 4,
+    "prettier.semi": false,
+    "prettier.quoteProps": "consistent",
+    "prettier.singleQuote": false,
+    
+    "editor.formatOnSave": true,
+    "[javascript]": {
+        "editor.formatOnSave": true
+    },
+    "[css]": {
+        "editor.formatOnSave": true
+    }
+}
