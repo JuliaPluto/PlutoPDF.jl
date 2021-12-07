@@ -36,5 +36,5 @@ jobs:
 
             - uses: actions/upload-artifact@v2
               with:
-                  name: hanoi.pdf
+                  name: hanoi_${{ matrix.os }}_${{ matrix.julia_version }}.pdf
                   path: ${{ env.output_dir }}/hanoi.pdf
