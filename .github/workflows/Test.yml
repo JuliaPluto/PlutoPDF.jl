@@ -22,7 +22,15 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - run: |
+            - name:
+              if: ${{ matrix.os == 'windows-latest' }}
+              run: |
+                  mkdir -p $HOME/output
+                  echo "output_dir=$(echo $HOME/output)" >> $env:GITHUB_ENV
+
+            - name:
+              if: ${{ matrix.os != 'windows-latest' }}
+              run: |
                   mkdir -p $HOME/output
                   echo "output_dir=$(echo $HOME/output)" >> $GITHUB_ENV
 
