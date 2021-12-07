@@ -22,7 +22,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - run: mkdir -p output
+            - run: |
+                  echo "output_dir=$(mktemp -d)" >> $GITHUB_ENV
 
             - uses: julia-actions/setup-julia@v1
               with:
@@ -30,7 +31,7 @@ jobs:
             - uses: julia-actions/julia-buildpkg@v1
             - uses: julia-actions/julia-runtest@v1
               env:
-                  TEST_OUTPUT_DIR: output/
+                  TEST_OUTPUT_DIR: ${{ env.output_dir }}
 
             - uses: actions/upload-artifact@v2
               with:
