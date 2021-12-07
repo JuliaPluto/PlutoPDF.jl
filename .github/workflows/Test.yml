@@ -24,6 +24,7 @@ jobs:
 
             - run: |
                   mkdir -p $HOME/output
+                  echo "output_dir=$(echo $HOME/output)" >> $GITHUB_ENV
 
             - uses: julia-actions/setup-julia@v1
               with:
@@ -31,9 +32,9 @@ jobs:
             - uses: julia-actions/julia-buildpkg@v1
             - uses: julia-actions/julia-runtest@v1
               env:
-                  TEST_OUTPUT_DIR: $HOME/output
+                  TEST_OUTPUT_DIR: ${{ env.output_dir }}
 
             - uses: actions/upload-artifact@v2
               with:
                   name: hanoi.pdf
-                  path: $HOME/output/hanoi.pdf
+                  path: ${{ env.output_dir }}/hanoi.pdf
