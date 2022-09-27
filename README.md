@@ -7,7 +7,7 @@ Export Pluto notebooks to PDF automatically!
 From the Julia REPL, PlutoPDF.jl can be installed with the following:
 
 ```julia
-import Pkg; Pkg.add(url="https://github.com/JuliaPluto/PlutoPDF.jl")
+import Pkg; Pkg.add("PlutoPDF")
 ```
 
 ## Usage
