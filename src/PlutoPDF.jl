@@ -36,19 +36,34 @@ const default_options = (
     displayHeaderFooter=false,
 )
 
-function html_to_pdf(html_path::AbstractString, output_path::Union{AbstractString,Nothing}=nothing; 
-    options=default_options, 
+const screenshot_default_options = (
+    outputOnly=false,
+    scale=2,
+)
+
+function html_to_pdf(
+    html_path::AbstractString, 
+    output_path::Union{AbstractString,Nothing}=nothing,
+    screenshot_dir_path::Union{AbstractString,Nothing}=nothing; 
+    options=default_options,
+    screenshot_options=screenshot_default_options,
     open=true, 
     console_output=true
 )
     bin_script = normpath(joinpath(@__DIR__, "../node/bin.js"))
 
     output_path = tamepath(something(output_path, Pluto.numbered_until_new(splitext(html_path)[1]; suffix=".pdf", create_file=false)))
+    
+    screenshot_dir_path = if screenshot_dir_path === nothing
+        nothing
+    else
+        mkpath(tamepath(screenshot_dir_path))
+    end
 
     @info "Generating pdf..."
     cmd = `$(node()) $bin_script $(tamepath(html_path)) $(output_path) $(JSON.json(
         (; default_options..., options...)
-    ))`
+    )) $(something(screenshot_dir_path, "")) $(JSON.json((; screenshot_default_options..., screenshot_options...)))`
     if console_output
         run(cmd)
     else
@@ -77,7 +92,12 @@ Run a notebook, generate an Export HTML and then print it to a PDF file!
 # Options
 The `options` keyword argument can be a named tuple to configure the PDF export. The possible options can be seen in the [docs for `puppeteer.PDFOptions`](https://pptr.dev/api/puppeteer.pdfoptions). You don't need to specify all options, for example: `options=(format="A5",)` will work.
 """
-function pluto_to_pdf(notebook_path::AbstractString, output_path::Union{AbstractString,Nothing}=nothing; kwargs...)
+function pluto_to_pdf(
+    notebook_path::AbstractString,
+    output_path::Union{AbstractString,Nothing}=nothing,
+    screenshot_dir_path::Union{AbstractString,Nothing}=nothing; 
+    kwargs...
+)
     c = Pluto.Configuration.from_flat_kwargs(;
         disable_writing_notebook_files = true,
         lazy_workspace_creation = true,
@@ -93,7 +113,7 @@ function pluto_to_pdf(notebook_path::AbstractString, output_path::Union{Abstract
 
     output_path = something(output_path, Pluto.numbered_until_new(Pluto.without_pluto_file_extension(notebook_path); suffix=".pdf", create_file=false))
 
-    html_to_pdf(filename, output_path; kwargs...)
+    html_to_pdf(filename, output_path, screenshot_dir_path; kwargs...)
 end
 
 function __init__()
