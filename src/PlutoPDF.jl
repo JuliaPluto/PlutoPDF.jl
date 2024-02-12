@@ -43,10 +43,10 @@ function html_to_pdf(html_path::AbstractString, output_path::Union{AbstractStrin
 )
     bin_script = normpath(joinpath(@__DIR__, "../node/bin.js"))
 
-    output_path = something(output_path, Pluto.numbered_until_new(splitext(html_path)[1]; suffix=".pdf", create_file=false))
+    output_path = tamepath(something(output_path, Pluto.numbered_until_new(splitext(html_path)[1]; suffix=".pdf", create_file=false)))
 
     @info "Generating pdf..."
-    cmd = `$(node()) $bin_script $(abspath(html_path)) $(abspath(output_path)) $(JSON.json(
+    cmd = `$(node()) $bin_script $(tamepath(html_path)) $(output_path) $(JSON.json(
         (; default_options..., options...)
     ))`
     if console_output
@@ -103,5 +103,15 @@ function __init__()
 end
 
 @deprecate pdf(args...; kwargs...) pluto_to_pdf(args...; kwargs...)
+
+function tryexpanduser(path)
+	try
+		expanduser(path)
+	catch ex
+		path
+	end
+end
+
+const tamepath = abspath ∘ tryexpanduser
 
 end
