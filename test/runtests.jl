@@ -9,7 +9,7 @@ testfile = download(
 
 is_CI = get(ENV, "CI", "no") == "no"
 
-outfile = pluto_to_pdf(testfile; open=is_CI)
+outfile = pluto_to_pdf(testfile; open=is_CI, options=(format="A5",))
 
 
 @test isfile(outfile)
