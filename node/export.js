@@ -25,24 +25,7 @@ export async function pdf(url, pdf_path, options, screenshot_dir, screenshot_opt
         height: 1000,
     })
 
-    while (true) {
-        const queued = await page.evaluate(`Array.from(document.getElementsByClassName('queued')).map(x => x.id)`)
-        const running = await page.evaluate(`Array.from(document.getElementsByClassName('running')).map(x => x.id)`)
-        const cells = await page.evaluate(`Array.from(document.getElementsByTagName('pluto-cell')).map(x => x.id)`)
-        const bodyClasses = await page.evaluate(`document.body.getAttribute('class')`)
-
-        if (running.length > 0) {
-            process.stdout.write(`\rRunning cell ${chalk.yellow(`${cells.length - queued.length}/${cells.length}`)} ${chalk.cyan(`[${running[0]}]`)}`)
-        }
-
-        if (!(bodyClasses.includes("loading") || queued.length > 0 || running.length > 0)) {
-            process.stdout.write(`\rRunning cell ${chalk.yellow(`${cells.length}/${cells.length}`)}`)
-            console.log()
-            break
-        }
-
-        await sleep(250)
-    }
+    await waitForPlutoBusy(page, false, { timeout: 30 * 1000 })
 
     console.log("Exporting as pdf...")
     await page.pdf({
@@ -63,18 +46,41 @@ export async function pdf(url, pdf_path, options, screenshot_dir, screenshot_opt
  * @param {p.Page} page
  * @param {string} screenshot_dir
  */
-async function screenshot_cells(page, screenshot_dir, { outputOnly, dpi }) {
+async function screenshot_cells(page, screenshot_dir, { outputOnly, scale }) {
     const cells = /** @type {String[]} */ (await page.evaluate(`Array.from(document.querySelectorAll('pluto-cell')).map(x => x.id)`))
 
     for (let cell_id of cells) {
-        const cell = await page.$(`#${cell_id}`)
+        const cell = await page.$(`[id="${cell_id}"]${outputOnly ? " > pluto-output" : ""}`)
         if (cell) {
             await cell.scrollIntoView()
             const rect = await cell.boundingBox()
+            if (rect == null) {
+                throw new Error(`Cell ${cell_id} is not visible`)
+            }
             const imgpath = path.join(screenshot_dir, `${cell_id}.png`)
 
-            await cell.screenshot({ path: imgpath, clip: rect, omitBackground: false })
+            await cell.screenshot({ path: imgpath, clip: { ...rect, scale }, omitBackground: false })
             console.log(`Screenshot ${cell_id} saved to ${imgpath}`)
         }
     }
+}
+
+const waitForPlutoBusy = async (page, iWantBusiness, options) => {
+    await page.waitForTimeout(1)
+    await page.waitForFunction(
+        (iWantBusiness) => {
+            let quiet = //@ts-ignore
+                document?.body?._update_is_ongoing === false &&
+                //@ts-ignore
+                document?.body?._js_init_set?.size === 0 &&
+                document?.body?.classList?.contains("loading") === false &&
+                document?.querySelector(`#process-status-tab-button.something_is_happening`) == null &&
+                document?.querySelector(`pluto-cell.running, pluto-cell.queued, pluto-cell.internal_test_queued`) == null
+
+            return iWantBusiness ? !quiet : quiet
+        },
+        options,
+        iWantBusiness
+    )
+    await page.waitForTimeout(1)
 }

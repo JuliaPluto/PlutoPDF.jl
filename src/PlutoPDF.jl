@@ -38,7 +38,7 @@ const default_options = (
 
 const screenshot_default_options = (
     outputOnly=false,
-    dpi=72,
+    scale=2,
 )
 
 function html_to_pdf(
