@@ -1,7 +1,7 @@
 module PlutoPDF
 
 import Pluto
-using NodeJS
+import NodeJS_18_jll: node
 import JSON
 import DefaultApplication
 
@@ -46,7 +46,7 @@ function html_to_pdf(html_path::AbstractString, output_path::Union{AbstractStrin
     output_path = something(output_path, Pluto.numbered_until_new(splitext(html_path)[1]; suffix=".pdf", create_file=false))
 
     @info "Generating pdf..."
-    cmd = `$(nodejs_cmd()) $bin_script $(abspath(html_path)) $(abspath(output_path)) $(JSON.json(
+    cmd = `$(node()) $bin_script $(abspath(html_path)) $(abspath(output_path)) $(JSON.json(
         (; default_options..., options...)
     ))`
     if console_output
