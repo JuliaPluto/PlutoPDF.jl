@@ -36,7 +36,7 @@ const default_options = (
     displayHeaderFooter=false,
 )
 
-const default_screenshot_options = (
+const screenshot_default_options = (
     outputOnly=false,
     dpi=72,
 )
