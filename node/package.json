@@ -1,13 +1,15 @@
 {
-  "name": "pluto-puppeteer",
-  "version": "1.0.0",
-  "description": "",
-  "author": "",
-  "license": "ISC",
-  "bin": "bin.js",
-  "dependencies": {
-    "chalk": "^4.1.0",
-    "file-url": "^3",
-    "puppeteer": "^9"
-  }
+    "name": "pluto-puppeteer",
+    "version": "1.0.0",
+    "description": "",
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "module": "nodenext",
+    "bin": "bin.js",
+    "dependencies": {
+        "chalk": "^5.3.0",
+        "file-url": "^4.0.0",
+        "puppeteer": "^22.0.0"
+    }
 }

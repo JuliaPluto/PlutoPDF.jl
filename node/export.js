@@ -1,5 +1,5 @@
-const p = require("puppeteer")
-const chalk = require("chalk")
+import p from "puppeteer"
+import chalk from "chalk"
 
 function sleep(time) {
     return new Promise((resolve, reject) => {
@@ -9,7 +9,7 @@ function sleep(time) {
     })
 }
 
-async function pdf(url, output, options, beforeClose = async () => {}) {
+export async function pdf(url, pdf_path, options, beforeClose = async () => {}) {
     const browser = await p.launch()
     console.log("Initiated headless browser")
     const page = await browser.newPage()
@@ -45,7 +45,7 @@ async function pdf(url, output, options, beforeClose = async () => {}) {
 
     console.log("Exporting as pdf...")
     await page.pdf({
-        path: output,
+        path: pdf_path,
         ...options,
     })
 
@@ -55,5 +55,3 @@ async function pdf(url, output, options, beforeClose = async () => {}) {
 
     await browser.close()
 }
-
-module.exports = { pdf }

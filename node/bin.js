@@ -1,6 +1,7 @@
-const exp = require("./export")
-const path = require("path")
-const fileUrl = require("file-url")
+import { pdf } from "./export.js"
+
+import path from "path"
+import fileUrl from "file-url"
 
 const fileInput = process.argv[2]
 const fileOutput = process.argv[3]
@@ -15,11 +16,9 @@ if (!fileOutput) {
     process.exit(1)
 }
 
-;(async () => {
-    const exportUrl = fileInput.startsWith("http://") || fileInput.startsWith("https://") ? fileInput : fileUrl(path.resolve(fileInput))
-    const pdf_path = path.resolve(fileOutput)
+const exportUrl = fileInput.startsWith("http://") || fileInput.startsWith("https://") ? fileInput : fileUrl(path.resolve(fileInput))
+const pdf_path = path.resolve(fileOutput)
 
-    await exp.pdf(exportUrl, pdf_path, options)
+await pdf(exportUrl, pdf_path, options)
 
-    process.exit()
-})()
+process.exit()

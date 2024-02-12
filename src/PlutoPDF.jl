@@ -1,7 +1,7 @@
 module PlutoPDF
 
 import Pluto
-using NodeJS
+import NodeJS_18_jll: node
 import JSON
 import DefaultApplication
 
@@ -46,7 +46,7 @@ function html_to_pdf(html_path::AbstractString, output_path::Union{AbstractStrin
     output_path = something(output_path, Pluto.numbered_until_new(splitext(html_path)[1]; suffix=".pdf", create_file=false))
 
     @info "Generating pdf..."
-    cmd = `$(nodejs_cmd()) $bin_script $(abspath(html_path)) $(abspath(output_path)) $(JSON.json(
+    cmd = `$(node()) $bin_script $(abspath(html_path)) $(abspath(output_path)) $(JSON.json(
         (; default_options..., options...)
     ))`
     if console_output
@@ -94,6 +94,12 @@ function pluto_to_pdf(notebook_path::AbstractString, output_path::Union{Abstract
     output_path = something(output_path, Pluto.numbered_until_new(Pluto.without_pluto_file_extension(notebook_path); suffix=".pdf", create_file=false))
 
     html_to_pdf(filename, output_path; kwargs...)
+end
+
+function __init__()
+    if Sys.iswindows()
+        @warn "Windows might not be supported because of https://github.com/JuliaPackaging/Yggdrasil/issues/8095"
+    end
 end
 
 @deprecate pdf(args...; kwargs...) pluto_to_pdf(args...; kwargs...)

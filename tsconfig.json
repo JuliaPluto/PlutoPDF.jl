@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ES2021",
-        "moduleResolution": "Node",
+        "module": "NodeNext",
         "lib": ["ES2021", "DOM", "WebWorker", "DOM.Iterable"],
         "allowJs": true,
         "checkJs": true,
