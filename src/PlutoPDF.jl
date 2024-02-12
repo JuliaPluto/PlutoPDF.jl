@@ -75,7 +75,7 @@ pluto_to_pdf(notebook_path::String[, output_pdf_path::String];
 Run a notebook, generate an Export HTML and then print it to a PDF file!
 
 # Options
-The `options` keyword argument can be a named tuple to configure the PDF export. The possible options can be seen in the [docs for `puppeteer.PDFOptions`](https://pptr.dev/api/puppeteer.pdfoptions).
+The `options` keyword argument can be a named tuple to configure the PDF export. The possible options can be seen in the [docs for `puppeteer.PDFOptions`](https://pptr.dev/api/puppeteer.pdfoptions). You don't need to specify all options, for example: `options=(format="A5",)` will work.
 """
 function pluto_to_pdf(notebook_path::AbstractString, output_path::Union{AbstractString,Nothing}=nothing; kwargs...)
     c = Pluto.Configuration.from_flat_kwargs(;
