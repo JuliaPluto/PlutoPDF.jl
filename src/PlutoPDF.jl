@@ -63,7 +63,7 @@ function html_to_pdf(
     @info "Generating pdf..."
     cmd = `$(node()) $bin_script $(tamepath(html_path)) $(output_path) $(JSON.json(
         (; default_options..., options...)
-    )) $(screenshot_dir_path) $(JSON.json((; screenshot_default_options..., screenshot_options...)))`
+    )) $(something(screenshot_dir_path, "")) $(JSON.json((; screenshot_default_options..., screenshot_options...)))`
     if console_output
         run(cmd)
     else
