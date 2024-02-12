@@ -1,7 +1,8 @@
 name = "PlutoPDF"
 uuid = "6eb38059-8c05-41f7-8871-5e7e2697ace6"
+authors = ["Fons van der Plas", "Connor Burns"]
 license = "MIT"
-version = "0.1.4"
+version = "1.0.0"
 
 [deps]
 DefaultApplication = "3f0dd361-4fe0-5fc6-8523-80b14ec94d85"
