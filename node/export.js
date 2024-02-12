@@ -1,5 +1,6 @@
 import p from "puppeteer"
 import chalk from "chalk"
+import path from "path"
 
 function sleep(time) {
     return new Promise((resolve, reject) => {
@@ -9,7 +10,7 @@ function sleep(time) {
     })
 }
 
-export async function pdf(url, pdf_path, options, beforeClose = async () => {}) {
+export async function pdf(url, pdf_path, options, screenshot_dir, screenshot_options, { beforeClose = async () => {} } = {}) {
     const browser = await p.launch()
     console.log("Initiated headless browser")
     const page = await browser.newPage()
@@ -48,10 +49,32 @@ export async function pdf(url, pdf_path, options, beforeClose = async () => {}) 
         path: pdf_path,
         ...options,
     })
+    if (screenshot_dir != null) {
+        await screenshot_cells(page, screenshot_dir, screenshot_options)
+    }
 
     console.log(chalk.green("Exported ✓") + " ... cleaning up")
 
     await beforeClose()
-
     await browser.close()
+}
+
+/**
+ * @param {p.Page} page
+ * @param {string} screenshot_dir
+ */
+async function screenshot_cells(page, screenshot_dir, { outputOnly, dpi }) {
+    const cells = /** @type {String[]} */ (await page.evaluate(`Array.from(document.querySelectorAll('pluto-cell')).map(x => x.id)`))
+
+    for (let cell_id of cells) {
+        const cell = await page.$(`#${cell_id}`)
+        if (cell) {
+            await cell.scrollIntoView()
+            const rect = await cell.boundingBox()
+            const imgpath = path.join(screenshot_dir, `${cell_id}.png`)
+
+            await cell.screenshot({ path: imgpath, clip: rect, omitBackground: false })
+            console.log(`Screenshot ${cell_id} saved to ${imgpath}`)
+        }
+    }
 }
