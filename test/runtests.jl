@@ -28,7 +28,7 @@ result = pluto_to_pdf(testfile, outfile, outdir; open=is_CI, options=(format="A5
 filez = readdir(outdir)
 @test length(filez) == 28
 @test all(endswith.(filez, ".png"))
-@test length(joinpath(outdir, read(filez[1]))) > 1000
+@test length(read(joinpath(outdir, filez[1]))) > 1000
 
 
 
