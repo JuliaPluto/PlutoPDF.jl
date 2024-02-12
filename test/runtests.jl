@@ -16,7 +16,7 @@ outdir = tempname(; cleanup=false)
 
 @info "Files" outfile outdir testfile testfile2
 
-result = pluto_to_pdf(testfile, outfile, outdir; open=is_CI, options=(format="A5",))
+result = pluto_to_pdf(testfile, outfile, outdir; open=is_CI, options=(format="A5",), screenshot_options=(scale=4,))
 
 @test result == outfile
 

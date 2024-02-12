@@ -23,6 +23,7 @@ export async function pdf(url, pdf_path, options, screenshot_dir, screenshot_opt
     await page.setViewport({
         width: 1000,
         height: 1000,
+        deviceScaleFactor: screenshot_options.scale,
     })
 
     await waitForPlutoBusy(page, false, { timeout: 30 * 1000 })
