@@ -7,7 +7,7 @@ const fileOutput = process.argv[3]
 const options = JSON.parse(process.argv[4])
 
 if (!fileInput) {
-    console.error("ERROR: First program argument must be a Pluto notebook path")
+    console.error("ERROR: First program argument must be a Pluto notebook path or URL")
     process.exit(1)
 }
 if (!fileOutput) {
@@ -16,12 +16,10 @@ if (!fileOutput) {
 }
 
 ;(async () => {
-    const file = path.resolve(fileInput)
-    const outputFile = path.resolve(fileOutput)
+    const exportUrl = fileInput.startsWith("http://") || fileInput.startsWith("https://") ? fileInput : fileUrl(path.resolve(fileInput))
+    const pdf_path = path.resolve(fileOutput)
 
-    const exportUrl = fileUrl(file)
-
-    await exp.pdf(exportUrl, outputFile, options)
+    await exp.pdf(exportUrl, pdf_path, options)
 
     process.exit()
 })()
