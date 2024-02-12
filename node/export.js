@@ -65,16 +65,20 @@ async function screenshot_cells(page, screenshot_dir, { outputOnly, scale }) {
     }
 }
 
+const timeout = (delay) =>
+    new Promise((r) => {
+        setTimeout(r, delay)
+    })
+
 const waitForPlutoBusy = async (page, iWantBusiness, options) => {
-    await page.waitForTimeout(1)
+    await timeout(1000)
     await page.waitForFunction(
         (iWantBusiness) => {
             let quiet = //@ts-ignore
-                document?.body?._update_is_ongoing === false &&
+                (document?.body?._update_is_ongoing ?? false) === false &&
                 //@ts-ignore
-                document?.body?._js_init_set?.size === 0 &&
+                (document?.body?._js_init_set?.size ?? 0) === 0 &&
                 document?.body?.classList?.contains("loading") === false &&
-                document?.querySelector(`#process-status-tab-button.something_is_happening`) == null &&
                 document?.querySelector(`pluto-cell.running, pluto-cell.queued, pluto-cell.internal_test_queued`) == null
 
             return iWantBusiness ? !quiet : quiet
@@ -82,5 +86,5 @@ const waitForPlutoBusy = async (page, iWantBusiness, options) => {
         options,
         iWantBusiness
     )
-    await page.waitForTimeout(1)
+    await timeout(1000)
 }
