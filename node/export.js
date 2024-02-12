@@ -4,7 +4,7 @@ const chalk = require("chalk")
 function sleep(time) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve()
+            resolve(null)
         }, time)
     })
 }
