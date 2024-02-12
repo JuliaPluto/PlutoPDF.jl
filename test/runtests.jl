@@ -13,6 +13,7 @@ outfile = pluto_to_pdf(testfile; open=is_CI, options=(format="A5",))
 
 
 @test isfile(outfile)
+@test dirname(outfile) == dirname(testfile)
 @test endswith(outfile, ".pdf")
 
 output_dir = get(ENV, "TEST_OUTPUT_DIR", nothing)
