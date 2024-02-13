@@ -41,6 +41,9 @@ const screenshot_default_options = (
     scale=2,
 )
 
+"""
+The same as `pluto_to_pdf`, but the first argument is a path to an HTML file or a URL (to a Pluto notebook hosted online).
+"""
 function html_to_pdf(
     html_path::AbstractString, 
     output_path::Union{AbstractString,Nothing}=nothing,
@@ -50,10 +53,11 @@ function html_to_pdf(
     open=true, 
     console_output=true
 )
-    bin_script = normpath(joinpath(@__DIR__, "../node/bin.js"))
+    is_url = startswith(html_path, "http://") || startswith(html_path, "https://")
+    is_url && @assert output_path !== nothing "You need to specify an output path when the input is a URL"
 
     output_path = tamepath(something(output_path, Pluto.numbered_until_new(splitext(html_path)[1]; suffix=".pdf", create_file=false)))
-    
+
     screenshot_dir_path = if screenshot_dir_path === nothing
         nothing
     else
@@ -61,7 +65,8 @@ function html_to_pdf(
     end
 
     @info "Generating pdf..."
-    cmd = `$(node()) $bin_script $(tamepath(html_path)) $(output_path) $(JSON.json(
+    bin_script = normpath(joinpath(@__DIR__, "../node/bin.js"))
+    cmd = `$(node()) $bin_script $(is_url ? html_path : tamepath(html_path)) $(output_path) $(JSON.json(
         (; default_options..., options...)
     )) $(something(screenshot_dir_path, "")) $(JSON.json((; screenshot_default_options..., screenshot_options...)))`
     if console_output
