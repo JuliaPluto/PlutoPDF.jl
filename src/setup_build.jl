@@ -24,7 +24,7 @@ function build_node(dir)
     
     if dir !== dirname(node_root_files[1])
         for f in node_root_files
-            cp(f, joinpath(dir, basename(f)); force=true)
+            readwrite(f, joinpath(dir, basename(f)))
         end
     end
     
@@ -34,5 +34,10 @@ function build_node(dir)
     end
     
     dir
+end
+
+"Like `cp` except we create the file manually (to fix permission issues). (It's not plagiarism if you use this function to copy homework.)"
+function readwrite(from::AbstractString, to::AbstractString)
+    write(to, read(from))
 end
 
