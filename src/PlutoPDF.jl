@@ -116,12 +116,6 @@ function pluto_to_pdf(
     html_to_pdf(filename, output_path, screenshot_dir_path; kwargs...)
 end
 
-function __init__()
-    if Sys.iswindows()
-        @warn "Windows might not be supported because of https://github.com/JuliaPackaging/Yggdrasil/issues/8095"
-    end
-end
-
 @deprecate pdf(args...; kwargs...) pluto_to_pdf(args...; kwargs...)
 
 function tryexpanduser(path)

@@ -19,10 +19,6 @@ import PlutoPDF
 PlutoPDF.pluto_to_pdf("notebook.jl")
 ```
 
-# Windows support
-
-Windows is currently not supported because of https://github.com/JuliaPackaging/Yggdrasil/issues/8095
-
 # Development
 
 Navigate to this directory, then `pkg> activate .` and `pkg> build`.

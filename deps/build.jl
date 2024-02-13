@@ -1,10 +1,9 @@
-import NodeJS_18_jll: npm
+import NodeJS_18_jll
 
-@assert isfile(npm)
-
-
-if Sys.iswindows()
-    @warn "Windows might not be supported because of https://github.com/JuliaPackaging/Yggdrasil/issues/8095"
+const npm = if Sys.iswindows()
+    NodeJS_18_jll.npm.cmd
+else
+    NodeJS_18_jll.npm
 end
 
 node_root = normpath(joinpath(@__DIR__, "../node"))
