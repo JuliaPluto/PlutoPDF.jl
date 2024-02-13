@@ -1,12 +1,11 @@
-import NodeJS_18_jll: npm
-
-@assert isfile(npm)
-
-
-if Sys.iswindows()
-    @warn "Windows might not be supported because of https://github.com/JuliaPackaging/Yggdrasil/issues/8095"
+import NodeJS_18_jll
+const npm = !Sys.iswindows() ? NodeJS_18_jll.npm : let
+    new = "$(NodeJS_18_jll.npm).cmd"
+    isfile(new) ? new : NodeJS_18_jll.npm
 end
 
-node_root = normpath(joinpath(@__DIR__, "../node"))
-run(`$npm --version`)
-println(run(`$npm --prefix=$node_root --scripts-prepend-node-path=true install $node_root`))
+node_root = joinpath(dirname(@__DIR__), "node")
+cd(node_root) do
+    run(`$npm --version`)
+    run(`$npm install`)
+end
