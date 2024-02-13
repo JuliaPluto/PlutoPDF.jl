@@ -80,17 +80,23 @@ end
 
 """
 ```julia
-pluto_to_pdf(notebook_path::String[, output_pdf_path::String]; 
+pluto_to_pdf(notebook_path::String[, output_pdf_path::String, screenshot_dir_path::String]; 
     options=default_options,
+    screenshot_options=screenshot_default_options,
     open::Bool=true,
     console_output::Bool=true,
 )
 ```
 
-Run a notebook, generate an Export HTML and then print it to a PDF file!
+Run a notebook, generate an Export HTML and then print it to a PDF file! If a `screenshot_dir_path` is provided, then PlutoPDF will also take a screenshot of each cell and save it to the directory.
 
 # Options
 The `options` keyword argument can be a named tuple to configure the PDF export. The possible options can be seen in the [docs for `puppeteer.PDFOptions`](https://pptr.dev/api/puppeteer.pdfoptions). You don't need to specify all options, for example: `options=(format="A5",)` will work.
+
+The `screenshot_options` keyword argument can be a named tuple to configure the generation of cell screenshots. Available options:
+- `outputOnly::Bool`: only screenshot the cell ouput, not the full cell including code and logs
+- `scale::Float64`: the device pixel ratio. 1 means 96dpi. Default is 2.
+
 """
 function pluto_to_pdf(
     notebook_path::AbstractString,
