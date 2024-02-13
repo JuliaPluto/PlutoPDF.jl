@@ -5,6 +5,8 @@ import NodeJS_18_jll: node
 import JSON
 import DefaultApplication
 
+include("./setup_build.jl")
+
 export html_to_pdf, pluto_to_pdf
 
 # Stolen from https://discourse.julialang.org/t/collecting-all-output-from-shell-commands/15592
@@ -65,7 +67,7 @@ function html_to_pdf(
     end
 
     @info "Generating pdf..."
-    bin_script = normpath(joinpath(@__DIR__, "../node/bin.js"))
+    bin_script = joinpath(get_build_dir(), "bin.js")
     cmd = `$(node()) $bin_script $(is_url ? html_path : tamepath(html_path)) $(output_path) $(JSON.json(
         (; default_options..., options...)
     )) $(something(screenshot_dir_path, "")) $(JSON.json((; screenshot_default_options..., screenshot_options...)))`
