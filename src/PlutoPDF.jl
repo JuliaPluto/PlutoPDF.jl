@@ -5,7 +5,7 @@ import NodeJS_18_jll: node
 import JSON
 import DefaultApplication
 
-export html_to_pdf, pluto_to_pdf, pdf
+export html_to_pdf, pluto_to_pdf
 
 # Stolen from https://discourse.julialang.org/t/collecting-all-output-from-shell-commands/15592
 "Run a Cmd object, returning the stdout & stderr contents plus the exit code"
@@ -126,8 +126,6 @@ function pluto_to_pdf(
 
     html_to_pdf(filename, output_path, screenshot_dir_path; kwargs...)
 end
-
-@deprecate pdf(args...; kwargs...) pluto_to_pdf(args...; kwargs...)
 
 function tryexpanduser(path)
 	try
