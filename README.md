@@ -35,4 +35,11 @@ PlutoPDF.pluto_to_pdf("notebook.jl", pdf_path, screenshots_dir)
 
 # Development
 
-Navigate to this directory, then `pkg> activate .` and `pkg> build`.
+When developing, it's nice to have the `node_modules` folder locally. Navigate to the `node` directory and run `npm install`. 
+
+If you don't have `npm`, then run `julia --project` and then
+
+```julia
+import PlutoPDF
+PlutoPDF.build_node(pwd())
+```
