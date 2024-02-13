@@ -20,7 +20,7 @@ end
 
 
 function build_node(dir)
-    @info "PlutoPDF:"
+    @info "PlutoPDF: Running npm install in scratch space..."
     
     if dir !== dirname(node_root_files[1])
         for f in node_root_files
