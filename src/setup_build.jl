@@ -15,7 +15,7 @@ const npm = !Sys.iswindows() ? NodeJS_18_jll.npm : let
 end
 
 function get_build_dir()
-    build_node(@get_scratch!("build_dir"))
+    build_node(@get_scratch!("build_dir2"))
 end
 
 
