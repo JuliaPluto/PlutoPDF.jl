@@ -1,7 +1,7 @@
 module PlutoPDF
 
 import Pluto
-import NodeJS_18_jll: node
+import NodeJS_20_jll: node
 import JSON
 import DefaultApplication
 

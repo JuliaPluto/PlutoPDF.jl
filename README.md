@@ -41,5 +41,5 @@ If you don't have `npm`, then run `julia --project` and then
 
 ```julia
 import PlutoPDF
-PlutoPDF.build_node(pwd())
+PlutoPDF.build_node(joinpath(pwd(), "node"))
 ```

@@ -1,4 +1,4 @@
-import NodeJS_18_jll
+import NodeJS_20_jll
 using Scratch
 using RelocatableFolders
 
@@ -9,13 +9,13 @@ const node_root_files = (
     @path(joinpath(dirname(@__DIR__), "node", "package.json")),
 )
 
-const npm = !Sys.iswindows() ? NodeJS_18_jll.npm : let
-    new = "$(NodeJS_18_jll.npm).cmd"
-    isfile(new) ? new : NodeJS_18_jll.npm
+const npm = !Sys.iswindows() ? NodeJS_20_jll.npm : let
+    new = "$(NodeJS_20_jll.npm).cmd"
+    isfile(new) ? new : NodeJS_20_jll.npm
 end
 
 function get_build_dir()
-    build_node(@get_scratch!("build_dir2"))
+    build_node(@get_scratch!("build_dir3"))
 end
 
 
