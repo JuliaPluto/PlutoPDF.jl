@@ -1,6 +1,6 @@
 # PlutoPDF.jl
 
-Export Pluto notebooks to PDF automatically!
+*Don't let your printer miss out on the fun!*
 
 ## Installation
 
