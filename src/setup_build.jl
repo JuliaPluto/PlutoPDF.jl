@@ -14,6 +14,14 @@ const npm = !Sys.iswindows() ? NodeJS_20_jll.npm : let
     isfile(new) ? new : NodeJS_20_jll.npm
 end
 
+const npm_cmd = let
+    # Add NodeJS PATH to the existing PATH environment variable 
+    path_sep = Sys.iswindows() ? ';' : ':'
+    path_list = prepend!(split(get(ENV, "PATH", ""), path_sep), NodeJS_20_jll.PATH_list)
+    path = join(path_list, path_sep)
+    addenv(`$(npm)`, "PATH" => path)
+end
+
 function get_build_dir()
     build_node(@get_scratch!("build_dir3"))
 end
@@ -29,8 +37,8 @@ function build_node(dir)
     end
     
     cd(dir) do
-        run(`$npm --version`)
-        run(`$npm install`)
+        run(`$npm_cmd --version`)
+        run(`$npm_cmd install`)
     end
     
     dir
