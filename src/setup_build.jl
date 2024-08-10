@@ -11,7 +11,7 @@ const node_root_files = (
 
 
 function npm_cmd()
-    const npm = !Sys.iswindows() ? NodeJS_20_jll.npm : let
+    npm = !Sys.iswindows() ? NodeJS_20_jll.npm : let
         new = "$(NodeJS_20_jll.npm).cmd"
         isfile(new) ? new : NodeJS_20_jll.npm
     end
