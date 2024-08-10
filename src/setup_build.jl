@@ -39,7 +39,7 @@ function build_node(dir)
     
     cd(dir) do
         run(`$(npm_cmd()) --version`)
-        run(`$(npm_cmd()) install`)
+        run(`$(npm_cmd()) install --audit-level=none --no-fund --no-audit`)
     end
     
     dir
