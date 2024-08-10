@@ -9,12 +9,13 @@ const node_root_files = (
     @path(joinpath(dirname(@__DIR__), "node", "package.json")),
 )
 
-const npm = !Sys.iswindows() ? NodeJS_20_jll.npm : let
-    new = "$(NodeJS_20_jll.npm).cmd"
-    isfile(new) ? new : NodeJS_20_jll.npm
-end
 
-const npm_cmd = let
+function npm_cmd()
+    const npm = !Sys.iswindows() ? NodeJS_20_jll.npm : let
+        new = "$(NodeJS_20_jll.npm).cmd"
+        isfile(new) ? new : NodeJS_20_jll.npm
+    end
+    
     # Add NodeJS PATH to the existing PATH environment variable 
     path_sep = Sys.iswindows() ? ';' : ':'
     path_list = prepend!(split(get(ENV, "PATH", ""), path_sep), NodeJS_20_jll.PATH_list)
@@ -37,8 +38,8 @@ function build_node(dir)
     end
     
     cd(dir) do
-        run(`$npm_cmd --version`)
-        run(`$npm_cmd install`)
+        run(`$(npm_cmd()) --version`)
+        run(`$(npm_cmd()) install`)
     end
     
     dir
