@@ -40,6 +40,7 @@ jobs:
             - uses: julia-actions/setup-julia@v1
               with:
                   version: ${{ matrix.julia-version }}
+                  arch: ${{ (matrix.julia-version == '1.6') && 'x64' || runner.arch }}
             - uses: julia-actions/julia-buildpkg@v1
             - uses: julia-actions/julia-runtest@v1
               env:
