@@ -32,6 +32,14 @@ screenshots_dir = "notebook_screenshots"
 PlutoPDF.pluto_to_pdf("notebook.jl", pdf_path, screenshots_dir)
 ```
 
+# How it works
+
+PlutoPDF.jl is just a combination of other software:
+- Pluto: besides running notebooks, the Pluto editor is designed to look nice when printed. When you use Pluto's export to Static PDF button (top right in the editor), the button just tells the browser to open the Print window. 
+- Chromium web browser: Pluto has CSS styling specific for printing. But it is the browser that has the ability to take HTML and CSS and make a PDF from it.
+- PlutoSliderServer: this package makes it easy to "convert `.jl` to `.html`." It can open a notebook, run it, and generate the export HTML all from the command line, so you don't need to click buttons in Pluto.
+- hmmmm more info coming
+
 
 # Development
 
