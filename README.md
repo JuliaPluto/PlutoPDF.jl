@@ -1,3 +1,7 @@
+# Unmaintained
+
+Unfortunately, PlutoPDF.jl takes too much work to maintain! So if it works on your computer, yay! Otherwise, sorry! PRs very welcome!
+
 # PlutoPDF.jl
 
 *Don't let your printer miss out on the fun!*
