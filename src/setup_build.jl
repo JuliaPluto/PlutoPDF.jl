@@ -29,27 +29,21 @@ end
 
 const node_build_lock = ReentrantLock()
 
-ci() = get(ENV, "CI", "neetjes") != "neetjes"
-
 function build_node(dir)
     lock(node_build_lock) do
-        @info "PlutoPDF: Running npm install in scratch space..."
-        
-        if dir !== dirname(node_root_files[1])
+        npm_cache_dir = @get_scratch!("npm_cache")
+        cmd = addenv(npm_cmd(), "NPM_CONFIG_CACHE" => npm_cache_dir)
+
+        @info "PlutoPDF: Running npm install in scratch space..." cdm read(`$(cmd) --version`, String)
+
+        if dir != dirname(node_root_files[1])
             for f in node_root_files
                 readwrite(f, joinpath(dir, basename(f)))
             end
         end
         
-        npm_cache_dir = @get_scratch!("npm_cache")
-        
-        cmd = addenv(npm_cmd(), "NPM_CONFIG_CACHE" => npm_cache_dir)
-        
-        @debug "huh" cmd
-        
         cd(dir) do
-            run(`$(cmd) --version`)
-            run(ci() ? `$(cmd) install --verbose` : `$(cmd) install --audit-level=none --no-fund --no-audit`)
+            run(`$(cmd) install --audit-level=none --no-fund --no-audit`)
         end
         
         @info "PlutoPDF: Finished npm install."
