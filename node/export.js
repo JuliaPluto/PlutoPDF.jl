@@ -11,7 +11,9 @@ function sleep(time) {
 }
 
 export async function pdf(url, pdf_path, options, screenshot_dir, screenshot_options, { beforeClose = async () => {} } = {}) {
-    const browser = await p.launch()
+    const browser = await p.launch({
+        args: ["--no-sandbox"],
+    })
     console.log("Initiated headless browser")
     const page = await browser.newPage()
     // await page.emulateMediaType('screen');
