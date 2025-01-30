@@ -29,15 +29,13 @@ export async function pdf(url, pdf_path, options, screenshot_dir, screenshot_opt
     })
 
     await waitForPlutoBusy(page, false, { timeout: 30 * 1000 })
+    await screenshot_cells(page, screenshot_dir, screenshot_options)
 
     console.log("Exporting as pdf...")
     await page.pdf({
         path: pdf_path,
         ...options,
     })
-    if (screenshot_dir != null) {
-        await screenshot_cells(page, screenshot_dir, screenshot_options)
-    }
 
     console.log(chalk.green("Exported ✓") + " ... cleaning up")
 
@@ -56,14 +54,19 @@ async function screenshot_cells(page, screenshot_dir, { outputOnly, scale }) {
         const cell = await page.$(`[id="${cell_id}"]${outputOnly ? " > pluto-output" : ""}`)
         if (cell) {
             await cell.scrollIntoView()
+            await cell.boundingBox()
+            await cell.scrollIntoView()
             const rect = await cell.boundingBox()
             if (rect == null) {
                 throw new Error(`Cell ${cell_id} is not visible`)
             }
-            const imgpath = path.join(screenshot_dir, `${cell_id}.png`)
 
-            await cell.screenshot({ path: imgpath, clip: { ...rect, scale }, omitBackground: false })
-            console.log(`Screenshot ${cell_id} saved to ${imgpath}`)
+            if (screenshot_dir != null) {
+                const imgpath = path.join(screenshot_dir, `${cell_id}.png`)
+
+                await cell.screenshot({ path: imgpath, clip: { ...rect, scale }, omitBackground: false })
+                console.log(`Screenshot ${cell_id} saved to ${imgpath}`)
+            }
         }
     }
 }
