@@ -15,7 +15,7 @@ const npm = !Sys.iswindows() ? NodeJS_20_jll.npm : let
 end
 
 function get_build_dir()
-    build_node(@get_scratch!("build_dir3"))
+    build_node(@get_scratch!("build_dir4"))
 end
 
 ci() = get(ENV, "CI", "neetjes") != "neetjes"
@@ -33,6 +33,8 @@ function build_node(dir)
         run(`$npm --version`)
         run(ci() ? `$npm install --verbose` : `$npm install`)
     end
+    
+    @info "PlutoPDF: Finished npm install."
     
     dir
 end
