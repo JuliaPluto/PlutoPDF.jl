@@ -1,6 +1,6 @@
 # How to export Pluto notebooks to PDF?
 
-You probably don't need the PlutoPDF.jl package! Just **open the notebook in Pluto** and **print out the page** (`⌘ P` or `Ctrl+P`). In the popup menu that opens, select the printer "Print to PDF". Be sure to enable "background graphics" and disable "headers and footers". Pluto is designed to output high-quality PDF files using the browser print function.
+You probably don't need the PlutoPDF.jl package! Just **open the notebook in Pluto** and **print out the page** (`⌘ P` or `Ctrl+P`). In the popup menu that opens, select the printer "Print to PDF". Be sure to enable "background graphics" and disable "headers and footers". **This is not a hack!** Pluto is designed to output high-quality PDF files using the browser print function.
 
 In fact, this package PlutoPDF.jl works exactly the same: it uses [puppeteer](https://pptr.dev/) and the Chromium browser ("headless") to print the document for you (and the result will be the same). You can use PlutoPDF.jl when you need to generate PDF files automatically from a script, e.g. when you have many notebooks that you want to archive.
 
