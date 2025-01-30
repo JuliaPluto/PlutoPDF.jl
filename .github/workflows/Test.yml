@@ -30,6 +30,7 @@ jobs:
 
             - name: Set output directory
               id: set_output_dir
+              shell: bash
               run: |
                   mkdir -p $HOME/output
                   echo "output_dir=$HOME/output" >> "$GITHUB_OUTPUT"
