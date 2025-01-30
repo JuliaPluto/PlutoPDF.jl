@@ -34,7 +34,7 @@ function build_node(dir)
         npm_cache_dir = @get_scratch!("npm_cache")
         cmd = addenv(npm_cmd(), "NPM_CONFIG_CACHE" => npm_cache_dir)
 
-        @info "PlutoPDF: Running npm install in scratch space..." cdm read(`$(cmd) --version`, String)
+        @info "PlutoPDF: Running npm install in scratch space..." cmd read(`$(cmd) --version`, String)
 
         if dir != dirname(node_root_files[1])
             for f in node_root_files
