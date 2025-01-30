@@ -18,6 +18,7 @@ function get_build_dir()
     build_node(@get_scratch!("build_dir3"))
 end
 
+ci() = get(ENV, "CI", "neetjes") != "neetjes"
 
 function build_node(dir)
     @info "PlutoPDF: Running npm install in scratch space..."
@@ -30,7 +31,7 @@ function build_node(dir)
     
     cd(dir) do
         run(`$npm --version`)
-        run(`$npm install`)
+        run(ci() ? `$npm install --verbose` : `$npm install`)
     end
     
     dir
