@@ -22,32 +22,30 @@ jobs:
                 julia-version: ["1.10", "1"]
                 os: [ubuntu-latest, windows-latest, macOS-latest]
 
+        outputs:
+            output_dir: ${{ steps.set_output_dir.outputs.output_dir }}
+
         steps:
             - uses: actions/checkout@v4
 
-            - name:
-              if: ${{ matrix.os == 'windows-latest' }}
+            - name: Set output directory
+              id: set_output_dir
               run: |
                   mkdir -p $HOME/output
-                  echo "output_dir=$(echo $HOME/output)" >> $env:GITHUB_ENV
-
-            - name:
-              if: ${{ matrix.os != 'windows-latest' }}
-              run: |
-                  mkdir -p $HOME/output
-                  echo "output_dir=$(echo $HOME/output)" >> $GITHUB_ENV
+                  echo "output_dir=$HOME/output" >> "$GITHUB_OUTPUT"
 
             - uses: julia-actions/setup-julia@v2
               with:
                   version: ${{ matrix.julia-version }}
-                  
+
             - uses: julia-actions/julia-buildpkg@v1
+            
             - uses: julia-actions/julia-runtest@v1
               env:
-                  TEST_OUTPUT_DIR: ${{ env.output_dir }}
+                  TEST_OUTPUT_DIR: ${{ steps.set_output_dir.outputs.output_dir }}
 
             - uses: actions/upload-artifact@v4
               if: failure()
               with:
                   name: hanoi_${{ matrix.os }}_${{ matrix.julia_version }}.pdf
-                  path: ${{ env.output_dir }}/hanoi.pdf
+                  path: ${{ steps.set_output_dir.outputs.output_dir }}/hanoi.pdf
