@@ -10,6 +10,6 @@
     "dependencies": {
         "chalk": "^5.3.0",
         "file-url": "^4.0.0",
-        "puppeteer": "^22.0.0"
+        "puppeteer": "^24.1.1"
     }
 }
