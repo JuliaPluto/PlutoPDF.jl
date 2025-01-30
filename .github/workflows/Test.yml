@@ -11,6 +11,9 @@ on:
         paths-ignore:
             - "**.md"
 
+env:
+    NPM_CONFIG_LOGLEVEL: verbose
+
 jobs:
     test:
         runs-on: ${{ matrix.os }}
