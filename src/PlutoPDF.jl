@@ -125,9 +125,6 @@ function pluto_to_pdf(
     write(filename, html_contents)
 
     output_path = something(output_path, Pluto.numbered_until_new(Pluto.without_pluto_file_extension(notebook_path); suffix=".pdf", create_file=false))
-    @show filename
-    @show output_path
-    @show screenshot_dir_path
 
     html_to_pdf(filename, output_path, screenshot_dir_path; kwargs...)
 end
