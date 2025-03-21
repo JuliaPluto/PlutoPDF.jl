@@ -20,8 +20,8 @@ function execute(cmd::Cmd)
     close(err.in)
 
     (
-        stdout = String(read(out)), 
-        stderr = String(read(err)),  
+        stdout = String(read(out)),
+        stderr = String(read(err)),
         code = process.exitcode,
     )
 end
@@ -47,12 +47,12 @@ const screenshot_default_options = (
 The same as `pluto_to_pdf`, but the first argument is a path to an HTML file or a URL (to a Pluto notebook hosted online).
 """
 function html_to_pdf(
-    html_path::AbstractString, 
+    html_path::AbstractString,
     output_path::Union{AbstractString,Nothing}=nothing,
-    screenshot_dir_path::Union{AbstractString,Nothing}=nothing; 
+    screenshot_dir_path::Union{AbstractString,Nothing}=nothing;
     options=default_options,
     screenshot_options=screenshot_default_options,
-    open=true, 
+    open=true,
     console_output=true
 )
     is_url = startswith(html_path, "http://") || startswith(html_path, "https://")
@@ -87,7 +87,7 @@ end
 
 """
 ```julia
-pluto_to_pdf(notebook_path::String[, output_pdf_path::String, screenshot_dir_path::String]; 
+pluto_to_pdf(notebook_path::String[, output_pdf_path::String, screenshot_dir_path::String];
     options=default_options,
     screenshot_options=screenshot_default_options,
     open::Bool=true,
@@ -108,7 +108,7 @@ The `screenshot_options` keyword argument can be a named tuple to configure the 
 function pluto_to_pdf(
     notebook_path::AbstractString,
     output_path::Union{AbstractString,Nothing}=nothing,
-    screenshot_dir_path::Union{AbstractString,Nothing}=nothing; 
+    screenshot_dir_path::Union{AbstractString,Nothing}=nothing;
     kwargs...
 )
     c = Pluto.Configuration.from_flat_kwargs(;

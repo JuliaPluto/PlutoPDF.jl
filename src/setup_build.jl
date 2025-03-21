@@ -15,8 +15,8 @@ function npm_cmd()
         new = "$(NodeJS_20_jll.npm).cmd"
         isfile(new) ? new : NodeJS_20_jll.npm
     end
-    
-    # Add NodeJS PATH to the existing PATH environment variable 
+
+    # Add NodeJS PATH to the existing PATH environment variable
     path_sep = Sys.iswindows() ? ';' : ':'
     path_list = prepend!(split(get(ENV, "PATH", ""), path_sep), NodeJS_20_jll.PATH_list)
     path = join(path_list, path_sep)
@@ -41,11 +41,11 @@ function build_node(dir)
                 readwrite(f, joinpath(dir, basename(f)))
             end
         end
-        
+
         cd(dir) do
             run(`$(cmd) install --audit-level=none --no-fund --no-audit`)
         end
-        
+
         @info "PlutoPDF: Finished npm install."
         dir
     end
