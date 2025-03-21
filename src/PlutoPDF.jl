@@ -43,6 +43,10 @@ const screenshot_default_options = (
     scale=2,
 )
 
+const generate_html_default_options = (
+    binder_url_js="undefined",
+)
+
 """
 The same as `pluto_to_pdf`, but the first argument is a path to an HTML file or a URL (to a Pluto notebook hosted online).
 """
@@ -109,6 +113,7 @@ function pluto_to_pdf(
     notebook_path::AbstractString,
     output_path::Union{AbstractString,Nothing}=nothing,
     screenshot_dir_path::Union{AbstractString,Nothing}=nothing;
+    generate_html_options=generate_html_default_options,
     kwargs...
 )
     c = Pluto.Configuration.from_flat_kwargs(;
@@ -118,7 +123,7 @@ function pluto_to_pdf(
     session = Pluto.ServerSession(;options=c)
     @info "Running notebook..."
     notebook = Pluto.SessionActions.open(session, notebook_path; run_async=false)
-    html_contents = Pluto.generate_html(notebook; binder_url_js="undefined")
+    html_contents = Pluto.generate_html(notebook; generate_html_options...)
     Pluto.SessionActions.shutdown(session, notebook)
 
     filename = tempname() * ".html"
