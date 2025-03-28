@@ -88,6 +88,7 @@ end
 """
 ```julia
 pluto_to_pdf(notebook_path::String[, output_pdf_path::String, screenshot_dir_path::String];
+    generate_html_options=(;),
     options=default_options,
     screenshot_options=screenshot_default_options,
     open::Bool=true,
@@ -98,6 +99,7 @@ pluto_to_pdf(notebook_path::String[, output_pdf_path::String, screenshot_dir_pat
 Run a notebook, generate an Export HTML and then print it to a PDF file! If a `screenshot_dir_path` is provided, then PlutoPDF will also take a screenshot of each cell and save it to the directory.
 
 # Options
+The `generate_html_options` keyword argument can be a named tuple to configure the HTML generation. See `Pluto.generate_html` for the list of possible options.
 The `options` keyword argument can be a named tuple to configure the PDF export. The possible options can be seen in the [docs for `puppeteer.PDFOptions`](https://pptr.dev/api/puppeteer.pdfoptions). You don't need to specify all options, for example: `options=(format="A5",)` will work.
 
 The `screenshot_options` keyword argument can be a named tuple to configure the generation of cell screenshots. Available options:
