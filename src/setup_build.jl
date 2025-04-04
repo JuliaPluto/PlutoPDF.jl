@@ -33,6 +33,7 @@ function build_node(dir)
     lock(node_build_lock) do
         npm_cache_dir = @get_scratch!("npm_cache")
         cmd = addenv(npm_cmd(), "NPM_CONFIG_CACHE" => npm_cache_dir)
+        addenv(cmd, "PUPPETEER_CACHE_DIR" => npm_cache_dir)
 
         @info "PlutoPDF: Running npm install in scratch space..." npm_version=Text(read(`$(cmd) --version`, String))
 
