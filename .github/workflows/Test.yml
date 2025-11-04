@@ -29,7 +29,7 @@ jobs:
             output_dir: ${{ steps.set_output_dir.outputs.output_dir }}
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
             - name: Set output directory
               id: set_output_dir
@@ -43,7 +43,7 @@ jobs:
                   version: ${{ matrix.julia-version }}
 
             - uses: julia-actions/julia-buildpkg@v1
-            
+
             - uses: julia-actions/julia-runtest@v1
               env:
                   TEST_OUTPUT_DIR: ${{ steps.set_output_dir.outputs.output_dir }}
