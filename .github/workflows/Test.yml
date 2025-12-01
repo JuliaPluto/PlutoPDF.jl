@@ -29,7 +29,7 @@ jobs:
             output_dir: ${{ steps.set_output_dir.outputs.output_dir }}
 
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@v6
 
             - name: Set output directory
               id: set_output_dir
@@ -48,7 +48,7 @@ jobs:
               env:
                   TEST_OUTPUT_DIR: ${{ steps.set_output_dir.outputs.output_dir }}
 
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v5
               if: failure()
               with:
                   name: hanoi_${{ matrix.os }}_${{ matrix.julia_version }}.pdf
