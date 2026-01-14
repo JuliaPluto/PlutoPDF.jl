@@ -48,7 +48,7 @@ jobs:
               env:
                   TEST_OUTPUT_DIR: ${{ steps.set_output_dir.outputs.output_dir }}
 
-            - uses: actions/upload-artifact@v5
+            - uses: actions/upload-artifact@v6
               if: failure()
               with:
                   name: hanoi_${{ matrix.os }}_${{ matrix.julia_version }}.pdf
