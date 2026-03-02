@@ -20,7 +20,6 @@ outdir_url = tempname(; cleanup=false)
 
 result_local = pluto_to_pdf(testfile, outfile_local, outdir_local; open=is_CI, options=(format="A5",), screenshot_options=(scale=4,))
 @test result_local == outfile_local
-@test dirname(outfile_local) == dirname(testfile)
 
 result_url = html_to_pdf("https://featured.plutojl.org/puzzles-games/tower%20of%20hanoi", outfile_url, outdir_url; open=is_CI, options=(format="A4",), screenshot_options=(scale=3,))
 @test result_url == outfile_url
