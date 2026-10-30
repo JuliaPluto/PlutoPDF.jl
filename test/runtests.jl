@@ -18,7 +18,13 @@ outdir_url = tempname(; cleanup=false)
 
 @info "Files" outfile_local outdir_local outfile_url outdir_url testfile testfile2
 
-result_local = pluto_to_pdf(testfile, outfile_local, outdir_local; open=is_CI, options=(format="A5",), screenshot_options=(scale=4,))
+preamble_js_sample = """
+document.body.style.background = "pink"
+document.body.style.background = "skyblue"
+"""
+
+
+result_local = pluto_to_pdf(testfile, outfile_local, outdir_local; open=is_CI, options=(format="A5",), screenshot_options=(scale=4,), preamble_js=preamble_js_sample)
 @test result_local == outfile_local
 
 result_url = html_to_pdf("https://featured.plutojl.org/puzzles-games/tower%20of%20hanoi", outfile_url, outdir_url; open=is_CI, options=(format="A4",), screenshot_options=(scale=3,))

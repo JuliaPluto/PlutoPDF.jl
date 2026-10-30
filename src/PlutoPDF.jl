@@ -50,6 +50,7 @@ function html_to_pdf(
     html_path::AbstractString,
     output_path::Union{AbstractString,Nothing}=nothing,
     screenshot_dir_path::Union{AbstractString,Nothing}=nothing;
+    preamble_js::Union{AbstractString,Nothing}=nothing,
     options=default_options,
     screenshot_options=screenshot_default_options,
     open=true,
@@ -69,8 +70,14 @@ function html_to_pdf(
     @info "Generating pdf..."
     bin_script = joinpath(get_build_dir(), "bin.js")
     cmd = `$(node()) $bin_script $(is_url ? html_path : tamepath(html_path)) $(output_path) $(JSON.json(
-        (; default_options..., options...)
-    )) $(something(screenshot_dir_path, "")) $(JSON.json((; screenshot_default_options..., screenshot_options...)))`
+    (;
+        options = (; default_options..., options...),
+        screenshot_dir_path = screenshot_dir_path,
+        screenshot_options = (; screenshot_default_options..., screenshot_options...),
+        preamble_js = preamble_js,
+    )
+        
+    ))`
     if console_output
         run(cmd)
     else
@@ -93,6 +100,7 @@ pluto_to_pdf(notebook_path::String[, output_pdf_path::String, screenshot_dir_pat
     screenshot_options=screenshot_default_options,
     open::Bool=true,
     console_output::Bool=true,
+    preamble_js::Union{String,Nothing}=nothing,
 )
 ```
 
@@ -105,6 +113,8 @@ The `options` keyword argument can be a named tuple to configure the PDF export.
 The `screenshot_options` keyword argument can be a named tuple to configure the generation of cell screenshots. Available options:
 - `outputOnly::Bool`: only screenshot the cell ouput, not the full cell including code and logs
 - `scale::Float64`: the device pixel ratio. 1 means 96dpi. Default is 2.
+
+`preamble_js` can be a string with (multi-line) JavaScript code that gets evaluated in the browser window after loading the notebook, before printing.
 
 """
 function pluto_to_pdf(

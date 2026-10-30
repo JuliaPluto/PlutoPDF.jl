@@ -2,15 +2,7 @@ import p from "puppeteer"
 import chalk from "chalk"
 import path from "path"
 
-function sleep(time) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(null)
-        }, time)
-    })
-}
-
-export async function pdf(url, pdf_path, options, screenshot_dir, screenshot_options, { beforeClose = async () => {} } = {}) {
+export async function pdf({ url, pdf_path, options, screenshot_dir_path, screenshot_options, preamble_js }, { beforeClose = async () => {} } = {}) {
     const browser = await p.launch({
         args: ["--no-sandbox"],
     })
@@ -29,7 +21,14 @@ export async function pdf(url, pdf_path, options, screenshot_dir, screenshot_opt
     })
 
     await waitForPlutoBusy(page, false, { timeout: 30 * 1000 })
-    await screenshot_cells(page, screenshot_dir, screenshot_options)
+    if (preamble_js) {
+        console.log("Running preamble JS")
+        await page.evaluate(preamble_js)
+        console.log("Finished preamble JS")
+        await waitForPlutoBusy(page, false, { timeout: 30 * 1000 })
+    }
+
+    await screenshot_cells(page, screenshot_dir_path, screenshot_options)
 
     console.log("Exporting as pdf...")
     await page.pdf({
@@ -45,9 +44,9 @@ export async function pdf(url, pdf_path, options, screenshot_dir, screenshot_opt
 
 /**
  * @param {p.Page} page
- * @param {string} screenshot_dir
+ * @param {string} screenshot_dir_path
  */
-async function screenshot_cells(page, screenshot_dir, { outputOnly, scale }) {
+async function screenshot_cells(page, screenshot_dir_path, { outputOnly, scale }) {
     const cells = /** @type {String[]} */ (await page.evaluate(`Array.from(document.querySelectorAll('pluto-cell')).map(x => x.id)`))
 
     for (let cell_id of cells) {
@@ -61,8 +60,8 @@ async function screenshot_cells(page, screenshot_dir, { outputOnly, scale }) {
                 throw new Error(`Cell ${cell_id} is not visible`)
             }
 
-            if (screenshot_dir != null) {
-                const imgpath = path.join(screenshot_dir, `${cell_id}.png`)
+            if (screenshot_dir_path != null) {
+                const imgpath = path.join(screenshot_dir_path, `${cell_id}.png`)
 
                 await cell.screenshot({ path: imgpath, clip: { ...rect, scale }, omitBackground: false })
                 console.log(`Screenshot ${cell_id} saved to ${imgpath}`)
@@ -90,7 +89,7 @@ const waitForPlutoBusy = async (page, iWantBusiness, options) => {
             return iWantBusiness ? !quiet : quiet
         },
         options,
-        iWantBusiness
+        iWantBusiness,
     )
     await timeout(1000)
 }
