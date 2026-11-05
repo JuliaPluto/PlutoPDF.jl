@@ -15,6 +15,7 @@ Scratch = "6c6a2e73-6563-6170-7368-637461726353"
 
 [compat]
 DefaultApplication = "1"
+Distributed = "1.10"
 JSON = "0.20, 0.21, 1"
 NodeJS_20_jll = "20"
 Pluto = "0.20, 1"
